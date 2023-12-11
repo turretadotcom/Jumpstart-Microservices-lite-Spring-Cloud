@@ -1,0 +1,128 @@
+--- 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jumpstart-config-server-deployment
+  namespace: development
+  labels:
+    app: jumpstart-config-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jumpstart-config-server
+  template:
+    metadata:
+      labels:
+        app: jumpstart-config-server
+    spec:
+      containers:
+      - name: jumpstart-config-server-container
+        image: TBD
+        ports:
+        - containerPort: 3000
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+--- 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka-server
+  namespace: development
+  labels:
+    app: eureka-server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eureka-server
+  template:
+    metadata:
+      labels:
+        app: eureka-server
+    spec:
+      containers:
+      - name: eureka-server-container
+        image: TBD
+        ports:
+        - containerPort: 8013
+--- 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka-client-01-service
+  namespace: development
+  labels:
+    app: eureka-client-01-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eureka-client-01-service
+  template:
+    metadata:
+      labels:
+        app: eureka-client-01-service
+    spec:
+      containers:
+      - name: eureka-client-01-container
+        image: TBD
+        ports:
+        - containerPort: 8011
+--- 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka-client-02-service
+  namespace: development
+  labels:
+    app: eureka-client-02-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eureka-client-02-service
+  template:
+    metadata:
+      labels:
+        app: eureka-client-02-service
+    spec:
+      containers:
+      - name: eureka-client-02-container
+        image: TBD
+        ports:
+        - containerPort: 8012
+--- 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quote-service
+  namespace: development
+  labels:
+    app: quote-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+      - name: rabbitmq-container
+        image: rabbitmq:management
+        ports:
+        - containerPort: 8080
