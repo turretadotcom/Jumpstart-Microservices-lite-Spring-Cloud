@@ -10,6 +10,30 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+
+  config_server:
+    image: jumpstart-config-server:0.0.1-SNAPSHOT
+    container_name: config_server
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+    ports:
+      - "8888:8888"
+      
+  config_server_client:
+    image: jumpstart-config-client:0.0.1-SNAPSHOT
+    container_name: config_server_client
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+    ports:
+      - "8080:8080"
+      
+      
 networks:
-  default:
+  turreta_network:
     driver: bridge
